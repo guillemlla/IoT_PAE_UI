@@ -35,6 +35,18 @@ dependencies {
 repositories {
     mavenCentral()
 }
+dependencies {
+    compile 'com.github.lecho:hellocharts-library:1.5.8@aar'
+}
+repositories {
+    maven {
+        url "https://jitpack.io"
+    }
+}
+
+dependencies {
+    compile 'com.github.lecho:hellocharts-android:v1.5.8'
+}
 
 dependencies {
     compile 'com.makeramen:roundedimageview:2.3.0'
@@ -42,4 +54,19 @@ dependencies {
 }
 dependencies {
     compile 'com.android.support.constraint:constraint-layout:+'
+}
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
+dependencies {
+    compile 'com.android.support:support-v4:25.+'
+}
+dependencies {
+    compile 'com.android.support:support-v4:25.+'
+}
+dependencies {
+    compile 'com.android.support:support-v4:25.+'
+}
+dependencies {
+    compile 'com.android.support:support-v4:25.+'
 }

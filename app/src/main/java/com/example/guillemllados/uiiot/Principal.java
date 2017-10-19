@@ -1,6 +1,7 @@
 package com.example.guillemllados.uiiot;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,7 +43,9 @@ public class Principal extends AppCompatActivity {
         ItemAdapter itemAdapter = new ItemAdapter(items, new ItemAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Item item) {
-                Toast.makeText(getApplicationContext(), "Item +"+item.getNom()+"CLicked", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Item +"+item.getNom()+"CLicked", Toast.LENGTH_SHORT).show();
+                iniciaDispositiu();
+
 
             }
         });
@@ -56,6 +59,13 @@ public class Principal extends AppCompatActivity {
             }
         });
 
+
+
+    }
+
+    public void iniciaDispositiu(){
+        Intent i = new Intent(this,Dispositiu.class);
+        startActivity(i);
     }
 
     public void createDialog(){
