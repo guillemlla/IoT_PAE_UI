@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class config extends Fragment {
+public class Config extends Fragment {
 
 
 

@@ -63,3 +63,7 @@ dependencies {
 dependencies {
     compile 'com.google.android.gms:play-services-maps:11.*.*'
 }
+
+dependencies {
+    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+}

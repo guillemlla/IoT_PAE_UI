@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class hores extends Fragment {
+public class Hores extends Fragment {
 
     private RecyclerView recyclerView;
     private FloatingActionButton buttonAdd;

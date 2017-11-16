@@ -4,16 +4,21 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TableLayout;
+
+import java.util.List;
 
 public class DispositiuPage extends AppCompatActivity {
+
+    private Grafiques tab1;
+    private Hores tab2;
+    private Gps tab3;
+    private Config tab4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +27,17 @@ public class DispositiuPage extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        AsyncGetAtributes asyncGetAtributes = new AsyncGetAtributes();
+         tab1 = new Grafiques();
+         tab2 = new Hores();
+         tab3 = new Gps();
+         tab4 = new Config();
+
+        AsyncGetAtributes asyncGetAtributes = new AsyncGetAtributes(new AsyncGetAtributes.onNewDataListener() {
+            @Override
+            public void onNewData(List<Atributs> llista) {
+                tab1.actualitzaGrafiques(llista);
+            }
+        });
         String[] strings= {"2"};
         asyncGetAtributes.execute(strings);
 
@@ -88,16 +103,15 @@ public class DispositiuPage extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    grafiques tab1 = new grafiques();
                     return tab1;
                 case 1:
-                    hores tab2 = new hores();
+
                     return tab2;
                 case 2:
-                    gps tab3 = new gps();
+
                     return tab3;
                 case 3:
-                    config tab4 = new config();
+
                     return tab4;
                 default:
                     return null;

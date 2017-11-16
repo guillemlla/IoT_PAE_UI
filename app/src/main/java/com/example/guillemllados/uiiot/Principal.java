@@ -61,8 +61,9 @@ public class Principal extends AppCompatActivity {
 
                 }else if(whatClick==2){
                     //retry syncrhonize with internet
-                    AsyncGetAtributes asyncGetAtributes = new AsyncGetAtributes("1");
-                    asyncGetAtributes.execute();
+                    String[]input = {"1"};
+                    //AsyncGetAtributes asyncGetAtributes = new AsyncGetAtributes();
+                    //asyncGetAtributes.execute(input);
                     //GET DATA FROM INTERNET
                 }
 

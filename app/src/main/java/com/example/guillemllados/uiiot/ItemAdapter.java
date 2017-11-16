@@ -44,7 +44,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     }
 
     @Override public void onBindViewHolder(ViewHolder holder, int position) {
-        final Item item = items.get(position);
+        final Item item = items.get(items.keySet().toArray()[position]);
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

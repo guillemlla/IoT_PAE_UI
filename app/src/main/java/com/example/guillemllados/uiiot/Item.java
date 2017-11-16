@@ -107,7 +107,7 @@ public class Item {
             if(now.getHour()== lastC.getHour()){
                 return "Fa menys d'una hora que s'ha actualizat";
             }else{
-                return "Fa "+(now.getHour()-lastC.getHour()) +" hores que no s'actualitza.";
+                return "Fa "+(now.getHour()-lastC.getHour()) +" Hores que no s'actualitza.";
             }
         }else{
             return "Fa molt de temps que no s'actualitza.";

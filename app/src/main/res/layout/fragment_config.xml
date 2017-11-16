@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.guillemllados.uiiot.config">
+    tools:context="com.example.guillemllados.uiiot.Config">
 
     <TextView
         android:id="@+id/textView2"
