@@ -27,19 +27,12 @@
         android:layout_marginRight="30dp"
         android:layout_marginTop="30dp" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/itemHora_tvTime"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp"
-        android:text="Repeat" />
-
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/checkBox"
+        android:layout_below="@+id/itemHora_tvTime"
+        android:layout_marginBottom="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="15dp">
@@ -47,80 +40,93 @@
         <Button
             android:id="@+id/bttDl"
 
+            style="@style/Widget.AppCompat.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:text="DL"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:background="@android:color/transparent"
+            android:text="DL"
             android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/bttDt"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/bttDl"
             android:layout_weight="1"
-            android:text="DT"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:background="@android:color/transparent"
-            android:textColor="@android:color/black"
-            />
+            android:text="DT"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/bttDm"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/bttDt"
             android:layout_weight="1"
-            android:text="DM"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:background="@android:color/transparent"
-            android:textColor="@android:color/black"/>
+            android:text="DM"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/bttDj"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/bttDm"
             android:layout_weight="1"
-            android:text="DJ"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:background="@android:color/transparent"
-            android:textColor="@android:color/black"/>
+            android:text="DJ"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/bttDv"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/bttDj"
             android:layout_weight="1"
-            android:text="DV"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:background="@android:color/transparent"
-            android:textColor="@android:color/black"/>
+            android:text="DV"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/bttDs"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/bttDv"
             android:layout_weight="1"
-            android:text="DS"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:background="@android:color/transparent"
-            android:textColor="@android:color/black"/>
+            android:text="DS"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/bttDg"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_toRightOf="@+id/bttDs"
             android:layout_weight="1"
-            android:text="DG"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:background="@android:color/transparent"
-            android:textColor="@android:color/black"/>
+            android:text="DG"
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
 </RelativeLayout>

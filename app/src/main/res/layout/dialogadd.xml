@@ -5,15 +5,6 @@
     android:layout_height="150dp"
     android:orientation="vertical">
 
-    <ProgressBar
-        android:id="@+id/pbProgress"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        tools:visibility="invisible" />
-
     <RelativeLayout
         android:id="@+id/rlDialogOptions"
         android:layout_width="wrap_content"
@@ -27,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Com vols sincronitzar el nou dispositiu?"
+            android:text="Com vols sincronitzar el dispositiu?"
             android:textAlignment="center" />
 
         <LinearLayout

@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TableLayout;
 
-public class Dispositiu extends AppCompatActivity {
+public class DispositiuPage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +21,10 @@ public class Dispositiu extends AppCompatActivity {
         setContentView(R.layout.activity_dispositiu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        AsyncGetAtributes asyncGetAtributes = new AsyncGetAtributes();
+        String[] strings= {"2"};
+        asyncGetAtributes.execute(strings);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Gràfiques"));
@@ -68,6 +72,8 @@ public class Dispositiu extends AppCompatActivity {
     //}
         return  true;
     }
+
+
 
     public class PagerAdapter extends FragmentStatePagerAdapter {
         int mNumOfTabs;

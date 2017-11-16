@@ -42,16 +42,36 @@
                 app:riv_tile_mode="repeat" />
 
             <ImageButton
-                android:id="@+id/itemCLose"
+                android:id="@+id/sinchronize"
                 style="@style/Widget.AppCompat.ImageButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="0dp"
                 android:background="@android:color/transparent"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="12dp"
+                android:paddingTop="5dp"
                 android:scaleType="fitEnd"
-                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+                app:srcCompat="@android:drawable/ic_popup_sync" />
+
+            <ImageButton
+                android:id="@+id/noInternet"
+                style="@android:style/Widget.DeviceDefault.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/sinchronize"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/sinchronize"
+                android:layout_marginRight="0dp"
+                android:background="@android:color/transparent"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
+                android:paddingTop="5dp"
+                app:srcCompat="@android:drawable/stat_notify_error" />
 
             <TextView
                 android:id="@+id/itemName"
@@ -72,6 +92,7 @@
                 android:layout_below="@+id/itemName"
                 android:layout_centerHorizontal="false"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/noInternet"
                 android:orientation="vertical">
 
                 <TextView

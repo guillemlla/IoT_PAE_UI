@@ -1,0 +1,166 @@
+package com.example.guillemllados.uiiot;
+
+import android.os.AsyncTask;
+import android.util.JsonReader;
+import android.util.Log;
+
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.Console;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Created by guillemllados on 31/10/17.
+ */
+
+public class AsyncGetAtributes extends AsyncTask<String, String, String> {
+
+    private static final String IP= "10.0.2.2";
+    private List<Atributs> atributs;
+    private onNewDataListener onNewDataListener;
+
+    public AsyncGetAtributes(onNewDataListener onNewDataListener) {
+
+        this.onNewDataListener = onNewDataListener;
+    }
+
+    public interface onNewDataListener{
+        public void onNewData(List<Atributs> llista);
+    }
+
+    @Override
+    protected String doInBackground(String[] strings) {
+
+        URL url;
+        HttpURLConnection connection = null;
+        try {
+            //Create connection
+            String Surl = "http://"+ IP+"/php/indexJSON.php/?deviceId="+strings[0];
+
+            url = new URL(Surl);
+            connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("POST");
+
+            connection.setUseCaches (false);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            //Get Response
+            atributs = readJsonStream(connection.getInputStream());
+
+
+            return null;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+
+        } finally {
+
+            if(connection != null) {
+                connection.disconnect();
+            }
+
+        }
+        return  strings[0];
+
+    }
+
+
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+
+        List<Atributs> llista = Principal.items.get(s).getAtributs();
+
+        atributs.addAll(llista);
+
+        this.onNewDataListener.onNewData(llista);
+
+
+
+    }
+
+    public List<Atributs> getAtributs() {
+        return atributs;
+    }
+
+    public List<Atributs> readJsonStream(InputStream in) throws IOException {
+        JsonReader reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+        try {
+            return readMessagesArray(reader);
+        } finally {
+            reader.close();
+        }
+    }
+
+    public List<Atributs> readMessagesArray(JsonReader reader) throws IOException {
+        List<Atributs> messages = new ArrayList<>();
+
+        reader.beginArray();
+        while (reader.hasNext()) {
+            messages.add(readMessage(reader));
+        }
+        reader.endArray();
+        return messages;
+    }
+
+    public Atributs readMessage(JsonReader reader) throws IOException {
+
+        String temperature = null;
+        String humidity = null;
+        CalendarE c = null;
+        String cString = null;
+
+        reader.beginObject();
+        while (reader.hasNext()) {
+            String name = reader.nextName();
+            if (name.equals("Temperature")) {
+                temperature = reader.nextString();
+            }else if (name.equals("Humidity")) {
+                humidity = reader.nextString();
+            }else if (name.equals("Calendar")){
+                cString = reader.nextString();
+            }else{
+                reader.skipValue();
+            }
+        }
+        reader.endObject();
+        c = new CalendarE();
+        int[] calendarDateTime = stringCalendatToInt(cString);
+        c.setDate(calendarDateTime[2],calendarDateTime[1],calendarDateTime[0]);
+        c.setTime(calendarDateTime[3],calendarDateTime[4],calendarDateTime[5]);
+        String s = "hour" +c.getHour()+"MiN"+c.getMin()+"SEC"+c.getSec()+"Dia"+c.getDay()+"Month"+c.getMonth()+"Year"+c.getYear();
+        int i = 1;
+        return new Atributs(c,temperature,humidity);
+
+    }
+
+    public int[] stringCalendatToInt(String calendar){
+
+        String[] strings = calendar.split(" ");
+        String[] date = strings[0].split("-");
+        String[] time = strings[1].split(":");
+
+        int[] result = {Integer.parseInt(date[0]),Integer.parseInt(date[1]),Integer.parseInt(date[2]),Integer.parseInt(time[0]),Integer.parseInt(time[1]),Integer.parseInt(time[2])};
+        return result;
+
+    }
+}

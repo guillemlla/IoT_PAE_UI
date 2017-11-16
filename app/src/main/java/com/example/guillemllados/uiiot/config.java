@@ -1,6 +1,9 @@
 package com.example.guillemllados.uiiot;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,6 +19,8 @@ import android.widget.Toast;
 
 
 public class config extends Fragment {
+
+
 
     private EditText etNom;
     private Button bttGuardar,bttImatge,bttLoc;
@@ -39,4 +44,6 @@ public class config extends Fragment {
 
 
     }
+
+
 }
