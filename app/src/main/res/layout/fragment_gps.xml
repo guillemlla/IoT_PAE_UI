@@ -3,34 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.guillemllados.uiiot.Gps">
+    tools:context="com.example.guillemllados.uiiot.gps">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
-        android:text="192º 123º E 123º 123ºN"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+    <RelativeLayout
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <com.google.android.gms.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/mapView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </RelativeLayout>
-
-    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_weight="2"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/mapwhere" />
+        android:id="@+id/mapwhere" >
 
+        <Button
+            android:id="@+id/buttonMaps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|left"
+            android:text="Go to item selected"
+            android:textSize="16sp"
+            android:background="#80000000"
+            android:textColor="#ffffff"
+            android:textColorHighlight="@color/colorPrimary" />
+
+    </RelativeLayout>
 </LinearLayout>

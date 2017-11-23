@@ -51,6 +51,6 @@ public class CalendarE {
 
     public String toString(){
 
-        return getYear()+"-"+getMonth()+"-"+getDay()+" "+getHour()+":"+getMin()+":"+getSec();
+        return Integer.toString(getYear())+"-"+Integer.toString(getMonth())+"-"+Integer.toString(getDay())+" "+Integer.toString(getHour())+":"+Integer.toString(getMin())+":"+Integer.toString(getSec());
     }
 }

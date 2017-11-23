@@ -51,6 +51,7 @@ dependencies {
 dependencies {
     compile 'com.makeramen:roundedimageview:2.3.0'
     compile 'com.google.android.gms:play-services-maps:11.0.4'
+    compile 'com.google.android.gms:play-services-location:11.0.4'
 }
 dependencies {
     compile 'com.android.support.constraint:constraint-layout:+'

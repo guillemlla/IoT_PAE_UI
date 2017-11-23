@@ -12,15 +12,15 @@ public class Item {
     private String nom,id;
     private ArrayList<Atributs> atributs;
     private String image;
-    private int latitude,longitude;
+    private String latitude,longitude;
 
-    public Item(String nom, String id,String image) {
+    public Item(String nom, String id,String image,String latitude, String longitude) {
         this.nom = nom;
         atributs = new ArrayList<>();
         this.id = id;
         this.image = image;
-        latitude = 0;
-        longitude = 0;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public ArrayList<Atributs> getAtributs() {
@@ -41,6 +41,7 @@ public class Item {
         c.set(Calendar.SECOND,sec);
         CalendarE cg = new CalendarE(c);
         atributs.add(new Atributs(cg,atrib1,atrib2));
+
     }
 
     public void addAtribute(Calendar c, String atrib1, String atrib2){
@@ -80,20 +81,20 @@ public class Item {
         this.nom = nom;
     }
 
-    public void setLatitude(int latitude) {
-        this.latitude = latitude;
-    }
-
-    public int getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public int getLongitude() {
-        return longitude;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public void setLongitude(int longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
     }
 
     public String lastTimeUpdated(){

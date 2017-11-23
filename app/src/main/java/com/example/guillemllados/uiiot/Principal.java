@@ -26,6 +26,7 @@ public class Principal extends AppCompatActivity {
     private FloatingActionButton add;
     public static HashMap<String,Item> items;
     private ItemAdapter itemAdapter;
+    public static Item itemclicked;
 
 
 
@@ -51,6 +52,7 @@ public class Principal extends AppCompatActivity {
             public void onItemClick(int whatClick, final Item item) {
                 Toast.makeText(getApplicationContext(), "Item +"+item.getNom()+"CLicked", Toast.LENGTH_SHORT).show();
                 if(whatClick == 0){
+                    itemclicked = item;
                     iniciaDispositiu();
                 }else if(whatClick==1){
 
@@ -103,6 +105,32 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Item i = new Item("Item0", "5","null",Double.toString(41.4013690), Double.toString(2.196325));
+                CalendarE c = new CalendarE();
+                c.setTime(2,3,4);
+                Atributs atributs = new Atributs(c,"40", "31");
+                i.addAtribute(atributs);
+                c = new CalendarE();
+                c.setTime(14,5,50);
+                atributs = new Atributs(c,"20", "40");
+
+                i.addAtribute(atributs);
+                c = new CalendarE();
+                c.setTime(5,2,30);
+                atributs = new Atributs(c,"70", "20");
+
+                i.addAtribute(atributs);
+                c = new CalendarE();
+                c.setTime(6,30,10);
+                atributs = new Atributs(c,"50", "10");
+
+                i.addAtribute(atributs);
+
+                AsyncUpdateDeviceDB asyncUpdateDeviceDB = new AsyncUpdateDeviceDB();
+                asyncUpdateDeviceDB.sendAtrributes(i.getId(),i.getAtributs());
+
+
+
             }
         });
 
@@ -114,7 +142,7 @@ public class Principal extends AppCompatActivity {
                 Boolean[] array = {true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false};
                 flash.sendData(array);
                 if(isNew){
-                    Item i = new Item("Item"+(items.size()), "12222","null");
+                    Item i = new Item("Item"+(items.size()), "12222","null",Double.toString(41.4013690), Double.toString(2.196325));
                     CalendarE c = new CalendarE();
                     Atributs atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
                     i.addAtribute(atributs);
@@ -144,7 +172,7 @@ public class Principal extends AppCompatActivity {
 
     public HashMap<String,Item> inicialitzarItems(HashMap<String,Item> items){
 
-        Item i = new Item("Item0", "0","null");
+        Item i = new Item("Item0", "0","null",Double.toString(41.423658), Double.toString(2.145692));
         CalendarE c = new CalendarE();
         Atributs atributs = new Atributs(c,"10", "30");
         i.addAtribute(atributs);
@@ -162,7 +190,7 @@ public class Principal extends AppCompatActivity {
         i.addAtribute(atributs);
         items.put(i.getId(),i);
 
-        i = new Item("Item1", "1","null");
+        i = new Item("Item1", "1","null",Double.toString(41.4013690), Double.toString(2.196325));
         c = new CalendarE();
          atributs = new Atributs(c,"10", "30");
 
