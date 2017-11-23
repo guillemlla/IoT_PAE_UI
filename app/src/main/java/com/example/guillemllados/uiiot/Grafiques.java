@@ -1,25 +1,33 @@
 package com.example.guillemllados.uiiot;
 
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.*;
 import com.github.mikephil.charting.components.*;
 import com.github.mikephil.charting.data.*;
+
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 
 
-public class Grafiques extends Fragment {
+public class Grafiques extends Fragment implements DatePickerDialog.OnDateSetListener {
 
     CombinedChart combinedChart;
+    private TextView datetext;
+    private DatePickerDialog datePickerDialog;
 
 
     @Override
@@ -29,7 +37,7 @@ public class Grafiques extends Fragment {
         View v = inflater.inflate(R.layout.fragment_grafiques, container, false);
 
         combinedChart = (CombinedChart) v.findViewById(R.id.chart);
-
+        datetext = (TextView) v.findViewById(R.id.textViewDate);
         return v;
 
     }
@@ -37,13 +45,20 @@ public class Grafiques extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        CalendarE calendarE = new CalendarE();
+        datetext.setText(calendarE.getDay()+"-"+calendarE.getMonth()+"-"+calendarE.getYear());
+        datePickerDialog = new DatePickerDialog(getContext(), Grafiques.this, calendarE.getYear(), calendarE.getMonth()-1, calendarE.getDay());
 
-        ArrayList<String> xAxisValues = getXAxisValues();
-        CombinedData data = new CombinedData();
+        datetext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.show();
 
-        data.setData(barData());
-        data.setData(lineData());
-        combinedChart.setData(data);
+            }
+        });
+
+
+        combinedChart.setData(setDummyData());
 
         //estil
         combinedChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -59,63 +74,110 @@ public class Grafiques extends Fragment {
         combinedChart.getAxisLeft().setAxisLineWidth((float)2);
         combinedChart.getAxisRight().setAxisLineWidth((float)2);
 
-        //combinedChart.setDescription("22/03/2018");
+        combinedChart.setDescription("");
         combinedChart.setDrawGridBackground(true);
         combinedChart.getAxisRight().setTextColor(Color.rgb(0, 155, 0));
 
     }
 
-    private ArrayList<String> getXAxisValues() {
-        ArrayList<String> labels = new ArrayList<>();
-        labels.add("00:00");labels.add("01:00");labels.add("02:00");labels.add("03:00");
-        labels.add("04:00");labels.add("05:00");labels.add("06:00");labels.add("07:00");
-        labels.add("08:00");labels.add("09:00");labels.add("10:00");labels.add("11:00");
-        labels.add("12:00");labels.add("13:00");labels.add("14:00");labels.add("15:00");
-        labels.add("16:00");labels.add("17:00");labels.add("18:00");labels.add("19:00");
-        labels.add("20:00");labels.add("21:00");labels.add("22:00");labels.add("23:00");
-        return labels;
-    }
-    public LineData lineData() {
-        ArrayList<Entry> lineEntries = new ArrayList<>();
-        for(int i = 0; i < 8; i++) {
-            lineEntries.add(new Entry(-10,0+3*i));
-            lineEntries.add(new Entry(12, 1+3*i));
-            lineEntries.add(new Entry(28, 2+3*i));
-        }
-        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Atrib1");
-        lineDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
-        lineDataSet.setColor(Color.rgb(0, 155, 0));
-        lineDataSet.setCircleColor(Color.rgb(0, 155, 0));
-        lineDataSet.setCircleRadius(2);
-        lineDataSet.setCircleColorHole(Color.rgb(155, 155, 155));
-        LineData lineData = new LineData();
-        //LineData lineData = new LineData(getXAxisValues(), lineDataSet);
-        lineData.setDrawValues(false);
-        return lineData;
-    }
-    public BarData barData() {
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-        for(int i = 0; i < 8; i++) {
-            barEntries.add(new BarEntry(20, 0+3*i));
-            barEntries.add(new BarEntry(50, 1+3*i));
-            barEntries.add(new BarEntry(80, 2+3*i));
-        }
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Atrib2");
-        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-        BarData barData = new BarData();
-        //BarData barData = new BarData(getXAxisValues(), barDataSet);
-        barData.setDrawValues(false);
-        return barData;
-    }
-
-
-
 
     public void actualitzaGrafiques(List<Atributs> list){
 
+        ArrayList<String> dateTime = new ArrayList<>();
+        ArrayList<Entry> lineEntries = new ArrayList<>();
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+
+        String data = datetext.getText().toString();
+        int i = 0;
+
+        for(Atributs a: list){
+
+            if((a.getDate().getDay()+"-"+a.getDate().getMonth()+"-"+a.getDate().getYear()).equals(data)){
+                dateTime.add(a.getDate().getHour()+":"+a.getDate().getMin());
+                lineEntries.add(new Entry(Float.parseFloat(a.getAtrib2()),i));
+                barEntries.add(new BarEntry(Float.parseFloat(a.getAtrib1()),i));
+                i++;
+            }
+
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Temperatura (ºC)");
+        lineDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        lineDataSet.setColor(Color.rgb(0, 155, 0));
+        lineDataSet.setCircleColor(Color.rgb(0, 155, 0));
+        lineDataSet.setCircleSize(2);
+        lineDataSet.setCircleColorHole(Color.rgb(155, 155, 155));
+
+        LineData lineData = new LineData(dateTime, lineDataSet);
+        lineData.setDrawValues(false);
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Humitat (%)");
+        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        BarData barData = new BarData(dateTime, barDataSet);
+        barData.setDrawValues(false);
+
+        CombinedData dataFinal = new CombinedData(dateTime);
+
+        dataFinal.setData(lineData);
+        dataFinal.setData(barData);
+
+        combinedChart.setData(dataFinal);
+        combinedChart.refreshDrawableState();
+
+    }
+
+    public CombinedData setDummyData(){
+
+        ArrayList<String> dateTime = new ArrayList<>();
+        dateTime.add("00:00");dateTime.add("01:00");dateTime.add("02:00");dateTime.add("03:00");
+        dateTime.add("04:00");dateTime.add("05:00");dateTime.add("06:00");dateTime.add("07:00");
+        dateTime.add("08:00");dateTime.add("09:00");dateTime.add("10:00");dateTime.add("11:00");
+        dateTime.add("12:00");dateTime.add("13:00");dateTime.add("14:00");dateTime.add("15:00");
+        dateTime.add("16:00");dateTime.add("17:00");dateTime.add("18:00");dateTime.add("19:00");
+        dateTime.add("20:00");dateTime.add("21:00");dateTime.add("22:00");dateTime.add("23:00");
+
+        ArrayList<Entry> lineEntries = new ArrayList<>();
+        for(int i = 0; i < 24; i++) {
+            lineEntries.add(new Entry(0,i));
+        }
+
+        ArrayList<BarEntry> barEntries = new ArrayList<>();
+        for(int i = 0; i < 24; i++) {
+            barEntries.add(new BarEntry(0,i));
+        }
+
+        LineDataSet lineDataSet = new LineDataSet(lineEntries, "Temperatura (ºC)");
+        lineDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+        lineDataSet.setColor(Color.rgb(0, 155, 0));
+        lineDataSet.setCircleColor(Color.rgb(0, 155, 0));
+        lineDataSet.setCircleSize(2);
+        lineDataSet.setCircleColorHole(Color.rgb(155, 155, 155));
+
+        LineData lineData = new LineData(dateTime, lineDataSet);
+        lineData.setDrawValues(false);
+
+        BarDataSet barDataSet = new BarDataSet(barEntries, "Humitat (%)");
+        barDataSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+
+        BarData barData = new BarData(dateTime, barDataSet);
+        barData.setDrawValues(false);
+
+        CombinedData data = new CombinedData(dateTime);
+
+        data.setData(lineData);
+        data.setData(barData);
+
+        return data;
+
+
+
     }
 
 
-
-
+    @Override
+    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+        datetext.setText(Integer.toString(i2)+"-"+Integer.toString(i1+1)+"-"+Integer.toString(i));
+        actualitzaGrafiques(Principal.items.get("1").getAtributs());
+    }
 }

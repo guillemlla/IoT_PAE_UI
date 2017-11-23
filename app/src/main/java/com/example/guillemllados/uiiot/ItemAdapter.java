@@ -70,8 +70,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         holder.noInternet.setClickable(false);
         holder.itemName.setText(item.getNom());
         holder.itemId.setText("ID: "+item.getId());
-        holder.itemAtrib1.setText(item.getLastAtrib1());
-        holder.itemAtrib2.setText(item.getLastAtrib2());
+        holder.itemAtrib1.setText("Humitat: "+item.getLastAtrib1()+"%");
+        holder.itemAtrib2.setText("Temperatura: "+item.getLastAtrib2()+"ºC");
         holder.itemAtrib3.setText(item.lastTimeUpdated());
         //holder.imageItem.setImageResource();
 

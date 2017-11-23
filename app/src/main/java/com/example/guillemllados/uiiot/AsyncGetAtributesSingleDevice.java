@@ -28,13 +28,13 @@ import java.util.List;
  * Created by guillemllados on 31/10/17.
  */
 
-public class AsyncGetAtributes extends AsyncTask<String, String, String> {
+public class AsyncGetAtributesSingleDevice extends AsyncTask<String, String, String> {
 
-    private static final String IP= "10.0.2.2";
+    private static final String IP= "192.168.1.190";//"10.0.2.2";
     private List<Atributs> atributs;
     private onNewDataListener onNewDataListener;
 
-    public AsyncGetAtributes(onNewDataListener onNewDataListener) {
+    public AsyncGetAtributesSingleDevice(onNewDataListener onNewDataListener) {
 
         this.onNewDataListener = onNewDataListener;
     }
@@ -64,7 +64,7 @@ public class AsyncGetAtributes extends AsyncTask<String, String, String> {
             atributs = readJsonStream(connection.getInputStream());
 
 
-            return null;
+            return strings[0];
 
         } catch (Exception e) {
 
@@ -78,7 +78,7 @@ public class AsyncGetAtributes extends AsyncTask<String, String, String> {
             }
 
         }
-        return  strings[0];
+        return  "-1";
 
     }
 
@@ -88,11 +88,13 @@ public class AsyncGetAtributes extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        List<Atributs> llista = Principal.items.get(s).getAtributs();
+        if(!s.equals("-1")){
+            List<Atributs> llista = Principal.items.get(s).getAtributs();
 
-        atributs.addAll(llista);
+            llista.addAll(atributs);
 
-        this.onNewDataListener.onNewData(llista);
+            this.onNewDataListener.onNewData(llista);
+        }
 
 
 
@@ -145,7 +147,7 @@ public class AsyncGetAtributes extends AsyncTask<String, String, String> {
         reader.endObject();
         c = new CalendarE();
         int[] calendarDateTime = stringCalendatToInt(cString);
-        c.setDate(calendarDateTime[2],calendarDateTime[1],calendarDateTime[0]);
+        c.setDate(calendarDateTime[2],calendarDateTime[1]-1,calendarDateTime[0]);
         c.setTime(calendarDateTime[3],calendarDateTime[4],calendarDateTime[5]);
         String s = "hour" +c.getHour()+"MiN"+c.getMin()+"SEC"+c.getSec()+"Dia"+c.getDay()+"Month"+c.getMonth()+"Year"+c.getYear();
         int i = 1;

@@ -62,7 +62,7 @@ public class Principal extends AppCompatActivity {
                 }else if(whatClick==2){
                     //retry syncrhonize with internet
                     String[]input = {"1"};
-                    //AsyncGetAtributes asyncGetAtributes = new AsyncGetAtributes();
+                    //AsyncGetAtributesSingleDevice asyncGetAtributes = new AsyncGetAtributesSingleDevice();
                     //asyncGetAtributes.execute(input);
                     //GET DATA FROM INTERNET
                 }
@@ -144,33 +144,40 @@ public class Principal extends AppCompatActivity {
 
     public HashMap<String,Item> inicialitzarItems(HashMap<String,Item> items){
 
-        Item i = new Item("Item0", "12222","null");
+        Item i = new Item("Item0", "0","null");
         CalendarE c = new CalendarE();
-        Atributs atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
+        Atributs atributs = new Atributs(c,"10", "30");
         i.addAtribute(atributs);
         c = new CalendarE();
-        atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
+         atributs = new Atributs(c,"10", "30");
+
         i.addAtribute(atributs);
         c = new CalendarE();
-        atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
+         atributs = new Atributs(c,"10", "30");
+
         i.addAtribute(atributs);
         c = new CalendarE();
-        atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
+         atributs = new Atributs(c,"10", "30");
+
         i.addAtribute(atributs);
         items.put(i.getId(),i);
 
-        i = new Item("Item1", "678638","null");
+        i = new Item("Item1", "1","null");
         c = new CalendarE();
-        atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
+         atributs = new Atributs(c,"10", "30");
+
         i.addAtribute(atributs);
         c = new CalendarE();
-        atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
+         atributs = new Atributs(c,"10", "30");
+
         i.addAtribute(atributs);
         c = new CalendarE();
-        atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
+         atributs = new Atributs(c,"10", "30");
+
         i.addAtribute(atributs);
         c = new CalendarE();
-        atributs = new Atributs(c,"Humitat = 10%", "Temperatura = 30ºC");
+         atributs = new Atributs(c,"10", "30");
+
         i.addAtribute(atributs);
         items.put(i.getId(),i);
 

@@ -32,14 +32,14 @@ public class DispositiuPage extends AppCompatActivity {
          tab3 = new Gps();
          tab4 = new Config();
 
-        AsyncGetAtributes asyncGetAtributes = new AsyncGetAtributes(new AsyncGetAtributes.onNewDataListener() {
+        AsyncGetAtributesSingleDevice asyncGetAtributesSingleDevice = new AsyncGetAtributesSingleDevice(new AsyncGetAtributesSingleDevice.onNewDataListener() {
             @Override
             public void onNewData(List<Atributs> llista) {
                 tab1.actualitzaGrafiques(llista);
             }
         });
-        String[] strings= {"2"};
-        asyncGetAtributes.execute(strings);
+        String[] strings= {"1"};
+        asyncGetAtributesSingleDevice.execute(strings);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("Gràfiques"));

@@ -28,7 +28,7 @@ public class CalendarE {
         return c.get(Calendar.SECOND);
     }
     public int getMonth(){
-        return c.get(Calendar.MONTH);
+        return c.get(Calendar.MONTH)+1;
     }
     public int getYear(){
         return c.get(Calendar.YEAR);
@@ -47,5 +47,10 @@ public class CalendarE {
         c.set(Calendar.MINUTE,min);
         c.set(Calendar.SECOND,sec);
         c.set(Calendar.HOUR_OF_DAY,hour);
+    }
+
+    public String toString(){
+
+        return getYear()+"-"+getMonth()+"-"+getDay()+" "+getHour()+":"+getMin()+":"+getSec();
     }
 }
