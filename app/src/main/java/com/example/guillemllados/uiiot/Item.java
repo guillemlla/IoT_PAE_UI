@@ -13,6 +13,9 @@ public class Item {
     private ArrayList<Atributs> atributs;
     private String image;
     private String latitude,longitude;
+    private String alarm; //hh:mm dl-dt-dm-dj-dv-ds-dg
+
+    private String[] diesSetmama = {"dl","dt","dm","dj","dv","ds","dg"};
 
     public Item(String nom, String id,String image,String latitude, String longitude) {
         this.nom = nom;
@@ -21,6 +24,27 @@ public class Item {
         this.image = image;
         this.latitude = latitude;
         this.longitude = longitude;
+        alarm = "";
+    }
+
+    public boolean setAlarm(String hora,String min,int[] diesSetmana){
+        if(diesSetmana.length==7){
+
+            String result = hora+":"+min+" ";
+
+            for(int i = 0;i<diesSetmana.length;i++){
+                if(diesSetmana[i]==1){
+                    result += diesSetmana[i]+"-";
+                }
+            }
+            if(result.lastIndexOf("-") == result.length()-1){
+                result = result.substring(0,result.length()-2);
+            }
+            alarm = result;
+            return true;
+
+        }
+        return false;
     }
 
     public ArrayList<Atributs> getAtributs() {
@@ -75,6 +99,10 @@ public class Item {
 
     public String  getId() {
         return id;
+    }
+
+    public String getAlarm() {
+        return alarm;
     }
 
     public void setNom(String nom) {

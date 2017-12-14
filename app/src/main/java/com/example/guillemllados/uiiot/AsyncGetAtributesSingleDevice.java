@@ -30,7 +30,7 @@ import java.util.List;
 
 public class AsyncGetAtributesSingleDevice extends AsyncTask<String, String, String> {
 
-    private static final String IP= "192.168.1.190";//"10.0.2.2";
+    private static final String IP= "10.0.100.202";//"10.0.2.2";
     private List<Atributs> atributs;
     private onNewDataListener onNewDataListener;
 

@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -38,28 +41,28 @@ import com.google.android.gms.common.*;
 import android.location.Location;
 import android.location.LocationManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-public class Gps extends Fragment implements OnMapReadyCallback, LocationListener,
+public class Gps extends Fragment implements OnMapReadyCallback, LocationListener, GoogleMap.InfoWindowAdapter,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private SupportMapFragment mSupportMapFragment;
     boolean locationStatus;
-    Location mLastLocation;
-    LocationRequest mLocationRequest;
-    GoogleApiClient mGoogleApiClient;
-    GoogleMap mGoogleMap;
-    Marker mCurrLocationMarker;
-    LocationManager locationManager;
-    double lat, lon;
-    LatLng latLng;
-    Location location;
-    Button button;
-    Marker markers;
-    ArrayList<Marker> marks = new ArrayList<>();
-    String idDevice;
+    private Location mLastLocation;
+    private LocationRequest mLocationRequest;
+    private  GoogleApiClient mGoogleApiClient;
+    private  GoogleMap mGoogleMap;
+    private LocationManager locationManager;
+    static double lat, lon;
+    private LatLng latLng;
+    private Location location;
+    private Button button;
+    private Marker markers;
+    private ArrayList<Marker> marks = new ArrayList<>();
 
     public Gps(){};
 
@@ -71,11 +74,9 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
         return rootView;
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
-
     }
 
     private void InitializeLocationManager(final Bundle savedInstanceState){
@@ -90,13 +91,13 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
 
         Criteria c = new Criteria();
         c.setAccuracy(Criteria.ACCURACY_FINE);
-        boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER); //es true si esta ences el gps! sino surt false
+        boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         boolean networkStatus = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         if (!gpsStatus && !networkStatus) {
             locationStatus = false;
             Log.d("TAG", "No pot obtindre l'ubicació");
         }
-
+        //va a onMapReady
     }
 
     @Override //GoogleApiClient
@@ -105,11 +106,10 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
         mLocationRequest.setInterval(1000);
         mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-
     }
     @Override//GoogleApiClient
-    public void onMapReady(GoogleMap googleMap) {
 
+    public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         //Initialize Google Play Services
@@ -120,7 +120,6 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
                 //Location Permission already granted
                 buildGoogleApiClient();
                 mGoogleMap.setMyLocationEnabled(true);
-
             } else {
                 //Request Location Permission
                 checkLocationPermission();
@@ -131,39 +130,40 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
         }
 
         List<String> providers = locationManager.getProviders(true);
-
-        for (int i = 0; i < providers.size(); i++) {
-            location = locationManager.getLastKnownLocation(providers.get(i));
-            if (location != null) {
-                lat = location.getLatitude();
-                lon = location.getLongitude();
-
-                latLng =new LatLng(lat, lon);
-                break;
+        while (location == null){
+            for (int i = 0; i < providers.size(); i++) {
+                location = locationManager.getLastKnownLocation(providers.get(i));
             }
+        }
+        if (location != null) {
+            lat = location.getLatitude();
+            lon = location.getLongitude();
+            latLng =new LatLng(lat, lon);
         }
 
         for(int i = 0; i<Principal.items.size(); i++){
-
             markers=  mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(Principal.items.get(Integer.toString(i)).getLatitude()),
                     Double.parseDouble(Principal.items.get(Integer.toString(i)).getLongitude()))).title(Principal.items.get(Integer.toString(i)).getNom()));
+
             marks.add(i,markers);
         }
-
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
+        mGoogleMap.setInfoWindowAdapter(this);
         iniButtons();
-
     }
 
     public void iniButtons(){
         button = (Button) getActivity().findViewById(R.id.buttonMaps);
+        button.setText("   Go to "+Principal.itemclicked.getNom()+"   ");
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Double.parseDouble(Principal.itemclicked.getLatitude())
                         , Double.parseDouble(Principal.itemclicked.getLongitude())), 15));
-                String aux = Principal.itemclicked.getNom().substring(4);
-                Marker m = marks.get(Integer.parseInt(aux));
-                m.showInfoWindow();
+                //String aux = Principal.itemclicked.getNom().substring(4);
+                //Marker m = marks.get(Integer.parseInt(aux));
+                Marker m = marks.get(Integer.parseInt(Principal.itemclicked.getId()));
+
+
             }
         });
     }
@@ -171,24 +171,16 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
     @Override  //GoogleApiClient
     public void onLocationChanged(Location location) {
         mLastLocation = location;
-        if (mCurrLocationMarker != null) {
-            mCurrLocationMarker.remove();
-        }
 
-        //Place current location marker
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
+        lat=location.getLatitude();
+        lon=location.getLongitude();
+        LatLng latLng = new LatLng(lat,lon);
 
-        //move map camera
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 11));
     }
 
     protected synchronized void buildGoogleApiClient() {
-        Toast.makeText(getActivity(), "buildGoogleApiClient", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "buildGoogleApiClient", Toast.LENGTH_SHORT).show();
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -207,7 +199,6 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
         Toast.makeText(getActivity(), "onConnectionFailed", Toast.LENGTH_SHORT).show();
     }
 
-
     public void checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -216,9 +207,6 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
                 new AlertDialog.Builder(getActivity())
                         .setTitle("Location Permission Needed")
                         .setMessage("This app needs the Location permission, please accept to use location functionality")
@@ -253,8 +241,7 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted, yay! Do the
-                    // location-related task you need to do.
+                    // permission was granted, yay! Do the location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
@@ -264,13 +251,37 @@ public class Gps extends Fragment implements OnMapReadyCallback, LocationListene
                         }
                         mGoogleMap.setMyLocationEnabled(true);
                     }
-
                 } else {
-
                     Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
         }
+    }
+
+    @Override //InfoWindowAdapter
+    public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @Override //InfoWindowAdapter
+    public View getInfoContents(Marker marker) {
+        View view = getActivity().getLayoutInflater().inflate(R.layout.marker_info_gps, null);
+        TextView tvn = (TextView) view.findViewById(R.id.name);
+        TextView tvh = (TextView) view.findViewById(R.id.humitat);
+        TextView tvt = (TextView) view.findViewById(R.id.temperatura);
+        tvn.setText(Principal.itemclicked.getNom());
+        int aa =0;
+        tvn.setText(marker.getTitle());
+        for ( int i = 0; i< Principal.items.size(); i++){
+            if(Principal.items.get(Integer.toString(i)).getNom()== marker.getTitle()){
+                aa=i;
+            }
+        }
+        tvh.setText("Humitat: " +Principal.items.get(Integer.toString(aa)).getLastAtrib1()+"% ");
+        tvt.setText("Temperatura: " +Principal.items.get(Integer.toString(aa)).getLastAtrib2()+"º ");
+
+        return view;
+
     }
 }

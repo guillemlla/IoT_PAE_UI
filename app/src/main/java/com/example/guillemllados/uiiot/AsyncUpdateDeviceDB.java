@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +25,7 @@ import java.util.List;
 
 public class AsyncUpdateDeviceDB extends AsyncTask<String,String,String> {
 
-    private static final String IP= "192.168.1.190";//"10.0.2.2";
+    private static final String IP= "10.0.100.202";//"10.0.2.2";
     private List<Atributs> atributs;
 
 
@@ -36,30 +37,37 @@ public class AsyncUpdateDeviceDB extends AsyncTask<String,String,String> {
         URL url;
         HttpURLConnection connection = null;
         OutputStream out = null;
+        BufferedReader reader;
         try {
             //Create connection
-            String Surl = "http://"+ IP+"/php/updateDB.php";
-
-
+            String Surl = "http://"+ IP+"/php/updatedb.php";
 
             url = new URL(Surl);
-            connection = (HttpURLConnection)url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
+
 
             out = new BufferedOutputStream(connection.getOutputStream());
 
             BufferedWriter writer = new BufferedWriter (new OutputStreamWriter(out, "UTF-8"));
 
-            writer.write(strings[0]);
+            writer.write("Data="+strings[0]);
 
             writer.flush();
 
-            writer.close();
+            int responseCode = connection.getResponseCode();
 
-            out.close();
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line = null;
 
-            connection.connect();
+            while ((line = reader.readLine()) != null) {
+                sb.append(line + "\n");
+            }
 
+            String response = sb.toString();
 
 
             return strings[0];
@@ -73,7 +81,9 @@ public class AsyncUpdateDeviceDB extends AsyncTask<String,String,String> {
 
             if(connection != null) {
                 connection.disconnect();
+                return strings[0];
             }
+
 
         }
         return  "-1";
@@ -102,14 +112,14 @@ public class AsyncUpdateDeviceDB extends AsyncTask<String,String,String> {
                 object.put("Device_ID",id);
                 object.put("Temperature",atribut.getAtrib1());
                 object.put("Humidity",atribut.getAtrib2());
-                object.put("Calendar",atribut.getDate().toString());
+                object.put("Calendar",atribut.getDate().toStringSQL());
 
                 jsonArray.put(object);
 
             }
 
             JSONObject dataToSendJson = new JSONObject();
-            dataToSendJson.put("", jsonArray);
+            dataToSendJson.put("Devices", jsonArray);
 
             this.execute(dataToSendJson.toString());
         }catch(Exception e){

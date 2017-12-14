@@ -20,11 +20,11 @@ import android.widget.Toast;
 
 public class Config extends Fragment {
 
-
-
     private EditText etNom;
     private Button bttGuardar,bttImatge,bttLoc;
     private View viewFragment;
+    String lonS, latS;
+    Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +34,12 @@ public class Config extends Fragment {
         bttGuardar = (Button) v.findViewById(R.id.bttSave);
         bttImatge = (Button) v.findViewById(R.id.bttImg);
         bttLoc = (Button) v.findViewById(R.id.bttLoc);
+
+        if(savedInstanceState!=null){
+            String lon = savedInstanceState.getString("longitude");
+        }
         return v;
+
     }
 
     @Override
@@ -42,8 +47,18 @@ public class Config extends Fragment {
         super.onStart();
         etNom.setText("Hola!");
 
+        bttLoc.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Principal.itemclicked.setLongitude(Double.toString(Gps.lon));
+                Principal.itemclicked.setLatitude(Double.toString(Gps.lat));
+            }
+        });
 
     }
 
 
+
+
+
 }
+

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class Principal extends AppCompatActivity {
     public static HashMap<String,Item> items;
     private ItemAdapter itemAdapter;
     public static Item itemclicked;
+    public DBHelper dbHelper;
+    public TextView textView;
 
 
 
@@ -37,6 +40,10 @@ public class Principal extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.inflateMenu(R.menu.principal);
+
+        textView = (TextView) findViewById(R.id.tVTitol);
+
+        dbHelper = new DBHelper(this);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
 
@@ -139,7 +146,21 @@ public class Principal extends AppCompatActivity {
             public void onClick(View view) {
                 //captar imatge
                 Flash flash = new Flash(getApplicationContext());
-                Boolean[] array = {true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false};
+                Boolean[] array = {true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,
+                        true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false,true,false
+
+                };
                 flash.sendData(array);
                 if(isNew){
                     Item i = new Item("Item"+(items.size()), "12222","null",Double.toString(41.4013690), Double.toString(2.196325));
